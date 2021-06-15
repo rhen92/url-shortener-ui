@@ -39,4 +39,25 @@ describe('Home Page', () => {
       .get('form input[name="long_url"]').type('https://www.humanesociety.org/sites/default/files/styles/1240x698/public/2019/02/dog-451643.jpg?h=bf654dbc&itok=MQGvBmuo')
       .get('form input[name="long_url"]').invoke('val').should('eq', 'https://www.humanesociety.org/sites/default/files/styles/1240x698/public/2019/02/dog-451643.jpg?h=bf654dbc&itok=MQGvBmuo')
   })
+
+  it('should add new url after submitting form', () => {
+    cy.intercept('POST', 'http://localhost:3001/api/v1/urls', {
+      statusCode: 201,
+      body: {
+        id: 2,
+        long_url: 'https://www.humanesociety.org/sites/default/files/styles/1240x698/public/2019/02/dog-451643.jpg?h=bf654dbc&itok=MQGvBmuo',
+        short_url: 'http://localhost:3001/useshorturl/2',
+        title: 'Cute dog'
+      }
+    })
+    cy.get('form input[name="title"]').type('Cute dog')
+      .get('form input[name="long_url"]').type('https://www.humanesociety.org/sites/default/files/styles/1240x698/public/2019/02/dog-451643.jpg?h=bf654dbc&itok=MQGvBmuo')
+      .get('button').click()
+      .get('div').eq(1)
+      .get('h3').eq(0).contains('Cute dog')
+      .get('a').eq(0).contains('http://localhost:3001/useshorturl/2')
+      .should('have.attr', 'href', 'http://localhost:3001/useshorturl/2')
+      .should('have.attr', 'target', 'blank')
+      .get('p').eq(0).contains('https://www.humanesociety.org/sites/default/files/styles/1240x698/public/2019/02/dog-451643.jpg?h=bf654dbc&itok=MQGvBmuo')
+  })
 })

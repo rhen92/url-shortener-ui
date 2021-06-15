@@ -64,4 +64,11 @@ describe('Home Page', () => {
       .should('have.attr', 'target', 'blank')
       .get('p').eq(0).contains('https://www.humanesociety.org/sites/default/files/styles/1240x698/public/2019/02/dog-451643.jpg?h=bf654dbc&itok=MQGvBmuo')
   })
+
+  it('should display message when tite input field is left blank', () => {
+    cy.get('form input[name="title"]')
+      .get('form input[name="long_url"]').type('https://www.humanesociety.org/sites/default/files/styles/1240x698/public/2019/02/dog-451643.jpg?h=bf654dbc&itok=MQGvBmuo')
+      .get('button').click()
+      .get('p').eq(0).contains('Please fill out both input fields')
+  })
 })

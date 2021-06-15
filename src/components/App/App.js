@@ -21,6 +21,10 @@ export class App extends Component {
       .catch(error => this.setState({ error: 'Unable to get urls!'}))
   }
 
+  addUrl = (newUrl) => {
+    this.setState({ urls: [newUrl, ...this.state.urls]})
+  }
+
   render() {
     return (
       <main className="App">

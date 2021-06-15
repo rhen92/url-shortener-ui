@@ -32,4 +32,11 @@ describe('Home Page', () => {
       .get('form input[name="long_url"]').should('have.attr', 'placeholder', 'URL to Shorten...')
       .get('button').contains('Shorten Please!')
   })
+
+  it('should reflect information typed in input fields', () => {
+    cy.get('form input[name="title"]').type('Cute dog')
+      .get('form input[name="title"]').invoke('val').should('eq', 'Cute dog')
+      .get('form input[name="long_url"]').type('https://www.humanesociety.org/sites/default/files/styles/1240x698/public/2019/02/dog-451643.jpg?h=bf654dbc&itok=MQGvBmuo')
+      .get('form input[name="long_url"]').invoke('val').should('eq', 'https://www.humanesociety.org/sites/default/files/styles/1240x698/public/2019/02/dog-451643.jpg?h=bf654dbc&itok=MQGvBmuo')
+  })
 })

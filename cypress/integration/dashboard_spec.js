@@ -16,6 +16,10 @@ describe('Home Page', () => {
     cy.contains('h1', 'URL Shortener')
   })
 
+  it('should display loading message', () => {
+    cy.get('p').contains('No urls yet! Find some to shorten!')
+  })
+
   it('should display existing shortened urls', () => {
     cy.wait(1000)
       .get('div').eq(1)

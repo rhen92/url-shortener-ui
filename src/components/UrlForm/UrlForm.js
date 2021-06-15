@@ -5,9 +5,20 @@ class UrlForm extends Component {
     super();
     this.props = props;
     this.state = {
+      message: false,
       long_url: '',
       title: '',
     };
+  }
+
+  validateInputs = () => {
+    if (!this.state.long_url || !this.state.title) {
+      (this.setState({message: true}))
+      return false
+    } else {
+      this.setState({message: false})
+      return true
+    }
   }
 
   handleNameChange = e => {
@@ -16,8 +27,12 @@ class UrlForm extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    if (!this.validateInputs()) {
+      return
+    } else {
     const newUrl = {
-      ...this.state
+      long_url: this.state.long_url,
+      title: this.state.title
     }
     fetch('http://localhost:3001/api/v1/urls', {
       method: 'POST',
@@ -30,6 +45,7 @@ class UrlForm extends Component {
       .then(data => this.props.addUrl(data))
       .catch(error => error.message)
     this.clearInputs();
+    }
   }
 
   clearInputs = () => {
@@ -54,7 +70,7 @@ class UrlForm extends Component {
           value={this.state.long_url}
           onChange={e => this.handleNameChange(e)}
         />
-
+        {this.state.message && <p>Please fill out both input fields</p>}
         <button onClick={e => this.handleSubmit(e)}>
           Shorten Please!
         </button>

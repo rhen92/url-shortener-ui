@@ -5,8 +5,8 @@ class UrlForm extends Component {
     super();
     this.props = props;
     this.state = {
+      long_url: '',
       title: '',
-      urlToShorten: ''
     };
   }
 
@@ -17,15 +17,23 @@ class UrlForm extends Component {
   handleSubmit = e => {
     e.preventDefault();
     const newUrl = {
-      id: Date.now(),
       ...this.state
     }
-    this.props.addUrl(newUrl)
+    fetch('http://localhost:3001/api/v1/urls', {
+      method: 'POST',
+      body: JSON.stringify(newUrl),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then(data => this.props.addUrl(data))
+      .catch(error => error.message)
     this.clearInputs();
   }
 
   clearInputs = () => {
-    this.setState({title: '', urlToShorten: ''});
+    this.setState({title: '', long_url: ''});
   }
 
   render() {
@@ -42,8 +50,8 @@ class UrlForm extends Component {
         <input
           type='text'
           placeholder='URL to Shorten...'
-          name='urlToShorten'
-          value={this.state.urlToShorten}
+          name='long_url'
+          value={this.state.long_url}
           onChange={e => this.handleNameChange(e)}
         />
 

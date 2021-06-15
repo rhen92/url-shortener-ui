@@ -17,7 +17,8 @@ describe('Home Page', () => {
   })
 
   it('should display existing shortened urls', () => {
-    cy.get('div').eq(1)
+    cy.wait(1000)
+      .get('div').eq(1)
       .get('h3').contains('Abstract Art')
       .get('a').contains('http://localhost:3001/useshorturl/1')
       .should('have.attr', 'href', 'http://localhost:3001/useshorturl/1')

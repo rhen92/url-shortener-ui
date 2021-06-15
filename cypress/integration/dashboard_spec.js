@@ -25,4 +25,11 @@ describe('Home Page', () => {
       .should('have.attr', 'target', 'blank')
       .get('p').contains('https://images.unsplash.com/photo-1531898418865-480b7090470f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80')
   })
+
+  it('should display the form', () => {
+    cy.get('form')
+      .get('form input[name="title"]').should('have.attr', 'placeholder', 'Title...')
+      .get('form input[name="long_url"]').should('have.attr', 'placeholder', 'URL to Shorten...')
+      .get('button').contains('Shorten Please!')
+  })
 })
